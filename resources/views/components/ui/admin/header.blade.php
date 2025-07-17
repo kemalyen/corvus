@@ -12,10 +12,7 @@
                 @php
                 $navLinks = [
                 'Dashboard' => '/dashboard',
-                'Users' => '/users',
-                'Create an User' => '/users/create',
-                'Products' => '/products',
-                'Create a Product' => '/products/create',
+                'Events' => '/events',
                 ];
                 @endphp
                 <!-- Navigation Links -->
