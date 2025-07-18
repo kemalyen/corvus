@@ -16,7 +16,7 @@ new class extends Component {
 
     public string $search = '';
 
-    public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
+    public array $sortBy = ['column' => 'name', 'direction' => 'desc'];
 
     // Table headers
     public function headers(): array
@@ -26,6 +26,8 @@ new class extends Component {
             ['key' => 'title', 'label' => 'Tile', 'class' => 'w-64'],
             ['key' => 'start_time_formatted', 'label' => 'Start Date', 'class' => 'w-8'],
             ['key' => 'organizer', 'label' => 'Organizer', 'class' => 'w-32'],
+            ['key' => 'capacity', 'label' => 'Capacity', 'class' => 'w-16'],
+            ['key' => 'status', 'label' => 'Status', 'class' => 'w-24'],
             ['key' => 'public_status', 'label' => 'Public', 'class' => 'w-16'],
         ];
     }
@@ -76,6 +78,13 @@ new class extends Component {
             {{ __('Events') }}
         </h2>
     </x-slot>
+
+    <div class="flex justify-end mb-4">
+        <x-ui.text-link href="{{ route('events.create') }}" class="btn-ghost btn-sm text-red-600" >
+            <x-icon name="o-plus" />
+            Create Event
+        </x-ui.text-link>
+    </div>
 
     @volt('events.index')
     <div class="pb-5">

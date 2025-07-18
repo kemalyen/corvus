@@ -1,7 +1,9 @@
 <?php
 
+use App\Enums\EventStatus;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
 use Livewire\Volt\Volt;
@@ -17,6 +19,25 @@ use Livewire\Volt\Volt;
 |
 */
 
+Route::get('/debug', function () {
+ 
+
+        $status = EventStatus::fromName('CANCELLED');
+
+       Event::create([
+            'title' => fake()->sentence,
+            'description' => fake()->paragraph,
+            'start_time' => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'location' => fake()->address,
+            'organizer' => fake()->name,
+            'capacity' => fake()->numberBetween(10, 100),
+            'is_public' => fake()->boolean(80), // 80%
+            'status' => $status->value, // Use the name of the enum case
+        ]);
+
+
+})->name('welcome');
+
 Route::redirect('home', '/')->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -28,5 +49,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth', 'verified')->group(function () {
- 
+    Route::get('/events/create', \App\Livewire\Events\CreateEvent::class)
+        ->name('events.create');
+
+    Route::get('/events/{event}/update', \App\Livewire\events\UpdateEvent::class)
+        ->name('events.update');
 });

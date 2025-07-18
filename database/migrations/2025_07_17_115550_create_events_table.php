@@ -22,9 +22,8 @@ return new class extends Migration
             $table->text('location')->nullable();
             $table->text('organizer')->nullable();
             $table->integer('capacity')->default(0);
-            $table->boolean('is_public')->default(true);
-            $table->enum('status', array_column(EventStatus::cases(), 'value'))
-                ->default(EventStatus::SCHEDULED);
+            $table->boolean('is_public')->default(true); 
+            $table->enum('status', array_column(EventStatus::cases(), 'value'))->default(EventStatus::PENDING->value);
             $table->timestamps();
         });
     }

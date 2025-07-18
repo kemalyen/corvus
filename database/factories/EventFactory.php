@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,7 +25,7 @@ class EventFactory extends Factory
             'organizer' => $this->faker->name,
             'capacity' => $this->faker->numberBetween(10, 100),
             'is_public' => $this->faker->boolean(80), // 80%
-            'status' => $this->faker->randomElement(['Active', 'Pending', 'Cancelled', 'Scheduled']),
+            'status' => fake()->randomElement(EventStatus::cases())->value,
             'created_at' => now(),
             'updated_at' => now(),
         ];
