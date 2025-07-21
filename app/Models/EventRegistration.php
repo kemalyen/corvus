@@ -33,4 +33,9 @@ class EventRegistration extends Model
         'event' => Event::class,
         'status' => RegistrationStatus::class,
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

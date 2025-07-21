@@ -66,6 +66,11 @@ new class extends Component {
     {
         return redirect()->route('events.show', ['event' => $id]);
     }
+
+    public function registrations(int $id)
+    {
+        return redirect()->route('events.registrations', ['event' => $id]);
+    }
 };
 ?>
 
@@ -96,6 +101,7 @@ new class extends Component {
                         <x-button wire:click="delete({{ $event['id'] }})" wire:confirm="Are you sure?" spinner class="btn-ghost btn-sm text-red-600" icon="o-trash" />
                         <x-button wire:click="edit({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="c-pencil-square" />
                         <x-button wire:click="show({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
+                        <x-button wire:click="registrations({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-user" />
                     </div>
                     @endscope
                 </x-table>
