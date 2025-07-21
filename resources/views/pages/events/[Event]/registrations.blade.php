@@ -2,12 +2,14 @@
 
 use App\Models\Event;
 use function Laravel\Folio\{middleware, name};
+use Livewire\Attributes\{Title, Layout};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
+use function Livewire\Volt\{state, title};
 
 name('events.registrations');
-middleware(['auth', 'verified']);
+middleware(['auth', 'verified']); 
 new class extends Component {
 
     use Toast;
@@ -37,6 +39,7 @@ new class extends Component {
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])->paginate(10);
     }
 
+    #[Layout('components.layouts.admin')]
     public function mount(Event $event)
     {
         $this->event = $event;
@@ -57,10 +60,8 @@ new class extends Component {
     }
 };
 ?>
-
-
-
-<x-layouts.admin>
+ 
+<div>
 
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -96,4 +97,4 @@ new class extends Component {
 
     @endvolt
 
-</x-layouts.admin>
+</div>

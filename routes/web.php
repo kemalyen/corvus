@@ -56,6 +56,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/events/create', \App\Livewire\Events\CreateEvent::class)
         ->name('events.create');
 
-    Route::get('/events/{event}/update', \App\Livewire\events\UpdateEvent::class)
+    Route::get('/events/{event}/update', \App\Livewire\Events\UpdateEvent::class)
         ->name('events.update');
 });

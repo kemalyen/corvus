@@ -1,5 +1,9 @@
 <x-layouts.main>
     
+    <x-slot name="title">
+        {{ $title ?? 'CorvusApp' }}
+    </x-slot>
+    
     <x-ui.admin.header />
 
     <!-- Page Heading -->
