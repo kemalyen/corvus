@@ -61,8 +61,12 @@ new class extends Component {
 };
 ?>
  
-<div>
 
+<x-layouts.admin>
+
+    <x-slot name="title">
+        Registrations for Event: {{ $event->title }}
+    </x-slot>
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
             Registrations for Event: {{ $event->title }}
@@ -70,7 +74,7 @@ new class extends Component {
     </x-slot>
 
     <div class="flex justify-end mb-4">
-        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600">
+        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Visit back Event
         </x-ui.text-link>
 
@@ -97,4 +101,4 @@ new class extends Component {
 
     @endvolt
 
-</div>
+</x-layouts.admin>
