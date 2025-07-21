@@ -21,6 +21,7 @@ class UpdateEvent extends Component
         $this->populateStatus();
         $this->form->setEvent($event);
     }
+    
     public function save()
     {
         $this->form->save();

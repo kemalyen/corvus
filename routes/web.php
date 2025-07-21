@@ -3,6 +3,7 @@
 use App\Enums\EventStatus;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Livewire\Client\EventRegistration;
 use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,9 @@ Route::get('/debug', function () {
 })->name('welcome');
 
 Route::redirect('home', '/')->name('home');
+
+Route::get('events/{event}/register', EventRegistration::class)->name('event.registration');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)

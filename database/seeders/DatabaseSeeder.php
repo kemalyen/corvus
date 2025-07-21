@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EventRegistration;
 use App\Models\Event;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,8 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        Event::factory(10)->create();
- 
+        $events = Event::factory(10)->create();
+
+        EventRegistration::factory(500)->recycle($events)->create();
 
         User::factory()->create([
             'name' => 'Test User',
