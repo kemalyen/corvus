@@ -1,10 +1,12 @@
 <?php
 
+use App\Exports\RegistrationsExport;
 use App\Models\Event;
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 name('events.registrations.export');
 middleware(['auth', 'verified']);
@@ -15,49 +17,25 @@ new class extends Component {
 
     public  Event $event;
 
-    public string $search = '';
-
-    public array $sortBy = ['column' => 'name', 'direction' => 'desc'];
-
-    // Table headers
-    public function headers(): array
-    {
-        return [
-            ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
-            ['key' => 'email', 'label' => 'Email', 'class' => 'w-8'],
-            ['key' => 'phone', 'label' => 'Phone', 'class' => 'w-32'],
-            ['key' => 'registered_at', 'label' => 'Registered At', 'class' => 'w-24'],
-        ];
-    }
-
-    public function registrations()
-    {
-        return $this->event->registrations()
-            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])->paginate(10);
-    }
-
     public function mount(Event $event)
     {
         $this->event = $event;
+        $this->registration = $event->registrations()
+            ->orderBy('created_at', 'desc')->get();
     }
 
-
-    public function with(): array
+    public function download(int $id, string $type)
     {
-        return [
-            'registrations' => $this->registrations(),
-            'headers' => $this->headers()
-        ];
-    }
+        if ($type === 'csv') {
+            return (new RegistrationsExport($id))->download('registrations-' . $id . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        }
 
-    public function show(int $id)
-    {
-        return redirect()->route('events.registrations.show', ['EventRegistration' => $id]);
+        // Default to Excel format      
+        return (new RegistrationsExport($id))->download('registrations-' . $id . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 };
 ?>
- 
+
 <x-layouts.admin>
 
     <x-slot name="header">
@@ -71,27 +49,30 @@ new class extends Component {
             Visit back Event
         </x-ui.text-link>
 
-        <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
-            Export Registration List
+        <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+            Registration List
         </x-ui.text-link>
 
     </div>
 
     @volt('events.registrations')
-    <div class="pb-5">
-        <div class="mx-auto space-y-6">
-            <x-card shadow>
-                <x-table :headers="$headers" :rows="$registrations" :sort-by="$sortBy" with-pagination>
-                    @scope('actions', $event)
-                    <div class="flex space-x-2">
-                        <x-button wire:click="show({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
-                    </div>
-                    @endscope
-                </x-table>
-            </x-card>
+
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">Export Registrations</h3>
+        <p class="mb-4">You can download the registration list for the event in CSV format.</p>
+        <p class="mb-4">Click the button below to download the registration list.</p>
+
+        <div class="flex items-center py-2 border-b">
+            <a href="#" wire:click.prevent="download({{ $event->id }}, 'excel')" class="btn btn-info btn-sm m-2">
+                Download Excel
+            </a>
+
+            <a href="#" wire:click.prevent="download({{ $event->id }}, 'csv')" class="btn btn-info btn-sm m-2">
+                Download CSV
+            </a>
         </div>
     </div>
-     
+
     @endvolt
 
 </x-layouts.admin>
