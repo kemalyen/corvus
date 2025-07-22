@@ -27,6 +27,7 @@ new class extends Component {
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
             ['key' => 'email', 'label' => 'Email', 'class' => 'w-8'],
+             ['key' => 'status', 'label' => 'Status', 'class' => 'w-8'],
             ['key' => 'phone', 'label' => 'Phone', 'class' => 'w-32'],
             ['key' => 'registered_at', 'label' => 'Registered At', 'class' => 'w-24'],
         ];

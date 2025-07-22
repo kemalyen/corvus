@@ -21,14 +21,7 @@ use Livewire\Volt\Volt;
 |
 */
 
-Route::get('/debug', function () {
  
-
-return ModelsEventRegistration::join('events', 'events.id', '=', 'event_registrations.event_id')
-                ->select('event_registrations.*', 'events.title as event_title')
-                ->orderByDesc('created_at')->toSql();
-
-    })->name('welcome');
 
 Route::redirect('home', '/')->name('home');
 
