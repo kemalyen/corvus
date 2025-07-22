@@ -16,8 +16,11 @@ class UpdateEvent extends Component
 
     public EventForm $form;
 
+    public Event $event;
+
     public function mount(Event $event)
     {
+        $this->event = $event;
         $this->populateStatus();
         $this->form->setEvent($event);
     }
@@ -35,6 +38,8 @@ class UpdateEvent extends Component
     }
     public function render()
     {
-        return view('livewire.events.update-event');
+        return view('livewire.events.update-event', [
+            'event' => $this->event
+        ]);
     }
 }

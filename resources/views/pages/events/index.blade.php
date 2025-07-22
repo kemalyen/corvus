@@ -16,14 +16,14 @@ new class extends Component {
 
     public string $search = '';
 
-    public array $sortBy = ['column' => 'name', 'direction' => 'desc'];
+    public array $sortBy = ['column' => 'title', 'direction' => 'desc'];
 
     // Table headers
     public function headers(): array
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'title', 'label' => 'Tile', 'class' => 'w-64'],
+            ['key' => 'title', 'label' => 'Title', 'class' => 'w-64'],
             ['key' => 'start_time_formatted', 'label' => 'Start Date', 'class' => 'w-8'],
             ['key' => 'organizer', 'label' => 'Organizer', 'class' => 'w-32'],
             ['key' => 'capacity', 'label' => 'Capacity', 'class' => 'w-16'],
@@ -37,7 +37,7 @@ new class extends Component {
         return Event::query()
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->when($this->search, function () {
-                return Event::where('name', 'like', $this->search . '%');
+                return Event::where('title', 'like', $this->search . '%');
             })->paginate(10);
     }
 
@@ -73,11 +73,11 @@ new class extends Component {
     }
 };
 ?>
-
-
-
 <x-layouts.admin>
 
+    <x-slot name="title">
+        {{ 'List all events' }}
+    </x-slot>
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Events') }}
@@ -85,7 +85,7 @@ new class extends Component {
     </x-slot>
 
     <div class="flex justify-end mb-4">
-        <x-ui.text-link href="{{ route('events.create') }}" class="btn-ghost btn-sm text-red-600" >
+        <x-ui.text-link href="{{ route('events.create') }}" class="btn-ghost btn-sm text-red-600">
             <x-icon name="o-plus" />
             Create Event
         </x-ui.text-link>

@@ -2,12 +2,13 @@
 
 use App\Models\Event;
 use function Laravel\Folio\{middleware, name};
+use Livewire\Attributes\{Title, Layout};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
-use Livewire\WithPagination;
+use Livewire\WithPagination; 
 
 name('events.registrations');
-middleware(['auth', 'verified']);
+middleware(['auth', 'verified']); 
 new class extends Component {
 
     use Toast;
@@ -37,6 +38,7 @@ new class extends Component {
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])->paginate(10);
     }
 
+    #[Layout('components.layouts.admin')]
     public function mount(Event $event)
     {
         $this->event = $event;
@@ -57,11 +59,13 @@ new class extends Component {
     }
 };
 ?>
-
-
+ 
 
 <x-layouts.admin>
 
+    <x-slot name="title">
+        Registrations for Event: {{ $event->title }}
+    </x-slot>
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
             Registrations for Event: {{ $event->title }}
@@ -69,7 +73,7 @@ new class extends Component {
     </x-slot>
 
     <div class="flex justify-end mb-4">
-        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600">
+        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Visit back Event
         </x-ui.text-link>
 

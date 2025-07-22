@@ -45,10 +45,9 @@ new class extends Component {
 
 <x-layouts.admin>
 
-<x-slot:title>
-        My Dynamic Title
-    </x-slot:title>
-
+    <x-slot name="title">
+        Export Registrations for Event: {{ $event->title }}
+    </x-slot>
 
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
