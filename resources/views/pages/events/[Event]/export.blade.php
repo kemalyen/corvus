@@ -6,16 +6,23 @@ use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\View\View;
 
 name('events.registrations.export');
 middleware(['auth', 'verified']);
+
 new class extends Component {
 
     use Toast;
     use WithPagination;
 
     public  Event $event;
+
+
+    public function rendering(View $view): void
+    {
+        $view->title('My Dynamic Title');
+    }
 
     public function mount(Event $event)
     {
@@ -37,6 +44,11 @@ new class extends Component {
 ?>
 
 <x-layouts.admin>
+
+<x-slot:title>
+        My Dynamic Title
+    </x-slot:title>
+
 
     <x-slot name="header">
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
