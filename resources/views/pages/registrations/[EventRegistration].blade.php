@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\EventStatus;
+use App\Enums\RegistrationStatus;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use Livewire\Volt\Component;
@@ -18,10 +20,18 @@ new class extends Component {
 
     public Event $event;
 
+    public $status_options;
+
+    public $status;
+
+    public $eventRegistrationModal = false;
+
     public function mount(EventRegistration $eventRegistration)
     {
         $this->eventRegistration = $eventRegistration;
         $this->event = Event::findOrFail($eventRegistration->event_id);
+        $this->status_options = RegistrationStatus::toCollection();
+        $this->status = $eventRegistration->status->name;
     }
 
     public function with(): array
@@ -30,6 +40,19 @@ new class extends Component {
             'eventRegistration' => $this->eventRegistration,
             'event' => $this->event
         ];
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'status' => 'required',
+        ]); 
+ 
+        $this->eventRegistration->status = RegistrationStatus::fromName($this->status);
+        $this->eventRegistration->save();
+        
+        $this->success('Registration updated successfully!');
+        $this->eventRegistrationModal = false;
     }
 }
 ?>
@@ -47,6 +70,11 @@ new class extends Component {
 
     <div class="mb-6">
 
+
+        <x-slot name="title">
+            Registrations for Event: {{ $event->title }}
+        </x-slot>
+
         <div class="flex justify-end mb-4">
             <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
                 Visit back Event
@@ -55,6 +83,7 @@ new class extends Component {
             <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
                 Registration List
             </x-ui.text-link>
+
 
 
         </div>
@@ -86,6 +115,18 @@ new class extends Component {
     <div class="mt-6">
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">Registration Details</h3>
+            <div class="flex justify-end mb-4">
+                <x-button label="Update the registration" @click="$wire.eventRegistrationModal = true" class="btn-ghost btn-sm text-red-600 p-2" />
+            </div>
+            <x-modal wire:model="eventRegistrationModal" title="Update Registration Status" subtitle="Update Registration Status">
+                <x-form no-separator wire:submit="save">
+                    <x-select label="Status" wire:model="status" :options="$status_options" />
+
+                    <x-slot:actions>
+                        <x-button label="Save" class="btn-ghost" type="primary" submit="true" spinner="save"/>
+                    </x-slot:actions>
+                </x-form>
+            </x-modal>
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
                 <div>
                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Name</dt>
@@ -106,6 +147,8 @@ new class extends Component {
                 <!-- Add more fields as needed -->
             </dl>
         </div>
+
     </div>
     @endvolt
+
 </x-layouts.admin>
