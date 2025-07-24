@@ -1,6 +1,6 @@
 ## Corvus Event Managemnt
 
-This is a simple, focused Event Management System MVP. The project istargeted small organizations / individuals. It has fundemental features for any small club, a community group, a single trainer running workshops, or a freelancer hosting small online sessions which needs something much simpler than Eventbrite or Cvent.
+This project is a simple, focused Event Management System (EMS) MVP designed specifically for small organizations and individuals. It provides the fundamental features needed by a small club, community group, independent trainer, or freelancer hosting online sessions. If you're looking for something much simpler and more accessible than comprehensive platforms like Eventbrite or Cvent, this system is for you.
   
 The fundemental features list:
 
