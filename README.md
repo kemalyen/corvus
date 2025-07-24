@@ -25,11 +25,11 @@ Confirmation Email:
 
 ## Installation
 
-You can use the [Laravel Installer](https://laravel.com/docs#installing-php) to install Genesis.
+You can use the [Laravel Installer](https://laravel.com/docs#installing-php) to install Corvus.
 
 Clone the reporsitory, sorry this is a personal project, I didn't add a fancy installer.
 ```bash
-git@github.com:kemalyen/personalized-laravel-starter-kit.git
+git@github.com:kemalyen/corvus.git
 ```
 And then install packages for frontend and backend
 
