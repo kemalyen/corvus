@@ -1,9 +1,10 @@
 <?php
 
-use App\Enums\EventStatus;
 use App\Enums\RegistrationStatus;
+use App\Mail\EventRegistrationUpdated;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Volt\Component;
 use function Laravel\Folio\{middleware, name};
 use Mary\Traits\Toast;
@@ -46,13 +47,20 @@ new class extends Component {
     {
         $this->validate([
             'status' => 'required',
-        ]); 
- 
+        ]);
+
         $this->eventRegistration->status = RegistrationStatus::fromName($this->status);
         $this->eventRegistration->save();
-        
+
         $this->success('Registration updated successfully!');
         $this->eventRegistrationModal = false;
+
+        Mail::to($this->eventRegistration->email)->queue(new EventRegistrationUpdated($this->event, [
+            'name' => $this->eventRegistration->name,
+            'email' => $this->eventRegistration->email,
+            'phone' => $this->eventRegistration->phone,
+            'status' => $this->eventRegistration->status->value,
+        ]));
     }
 }
 ?>
@@ -123,7 +131,7 @@ new class extends Component {
                     <x-select label="Status" wire:model="status" :options="$status_options" />
 
                     <x-slot:actions>
-                        <x-button label="Save" class="btn-ghost" type="primary" submit="true" spinner="save"/>
+                        <x-button label="Save" class="btn-ghost" type="primary" submit="true" spinner="save" />
                     </x-slot:actions>
                 </x-form>
             </x-modal>

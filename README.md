@@ -1,8 +1,27 @@
-## Personal Laravel Starter Kit
+## Corvus Event Managemnt
 
-A Laravel starter kit built on the **TALL Stack**, along with **Volt** and **Folio** inspired from [Genesis](https://github.com/thedevdojo/genesis). This is a persinal starter kit including only what I need. 
+This is a simple, focused Event Management System MVP. The project istargeted small organizations / individuals. It has fundemental features for any small club, a community group, a single trainer running workshops, or a freelancer hosting small online sessions which needs something much simpler than Eventbrite or Cvent.
+  
+The fundemental features list:
 
-I'm using MaryUI and so pleased using it. So I've changed most of the styles. You may see some sample code in another branch. The main branch has only nessary files and functionalities. 
+Public Event Page:
+
+-   A clean, public-facing page for each event displaying the title, description, date, time, and location.
+-   A prominent "Register" button.
+
+Simple Registration Form:
+-   Collect Name (first, last).
+-   Collect Email Address, Phone number
+
+Attendee List for Organizer:
+-   For each event, the organizer can view a list of registered attendees (Name, Email).
+-   Ability to Export the list (e.g., CSV or Excel).
+
+Confirmation Email:
+-   Automated email sent to the attendee upon successful registration.
+-   Contains event details and confirmation (e.g., "You are now registered for [Event Name]").
+-   Automated email sent to the attendee upon updating registration.
+
 
 ## Installation
 
@@ -39,17 +58,7 @@ Below is a list of all the technologies that Genesis has been **built with**:
 - [Folio](https://github.com/laravel/folio)
 - [Volt](https://github.com/livewire/volt)
 
-Learn how to install and configure Genesis below.
-
-## Layouts
-
-I customized this part. So you may modify or add your own layouts
-Within Genesis there are three layouts, located inside of `resources/views/components/layouts`:
-
-1. **frontend.blade.php** - This is the layout for the frontend
-2. **admin.blade.php** - This is the layout used for pages admin pages
-3. **main.blade.php** - This is the base main template.
-
+ 
 
 ## Credits
 

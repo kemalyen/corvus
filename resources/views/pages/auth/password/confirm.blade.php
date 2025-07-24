@@ -24,6 +24,10 @@ new class extends Component
 ?>
 
 <x-layouts.main>
+
+    <x-slot name="title">
+        Confirm your password
+    </x-slot>
     <div class="flex flex-col items-stretch justify-center w-screen min-h-screen py-10 sm:items-center">
 
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
