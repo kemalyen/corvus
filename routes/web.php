@@ -37,6 +37,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth', 'verified')->group(function () {
+
+     Route::get('/users/create', \App\Livewire\Users\CreateUser::class)
+        ->name('users.create');
+
+     Route::get('/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
+        ->name('users.update');
+
+
     Route::get('/events/create', \App\Livewire\Events\CreateEvent::class)
         ->name('events.create');
 

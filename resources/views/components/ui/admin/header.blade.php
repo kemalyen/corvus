@@ -13,6 +13,7 @@
                 $navLinks = [
                 'Dashboard' => '/dashboard',
                 'Events' => '/events',
+                'Users' => '/users',
                 ];
                 @endphp
                 <!-- Navigation Links -->
