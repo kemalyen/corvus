@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Model::unguard();
 
         EventRegistration::truncate();
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
         //$this->call('UsersTableSeeder');
 
         Model::reguard();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $events = Event::factory(10)->create();
 
         EventRegistration::factory(500)->recycle($events)->create();

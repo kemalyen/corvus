@@ -1,14 +1,14 @@
 <?php
 
 use App\Models\Event;
-use function Laravel\Folio\{middleware, name};
+
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
+use function Laravel\Folio\{middleware, name};
 
 name('events.index');
-middleware(['auth', 'verified']);
-
+middleware(['auth', 'verified', 'role:admin']);
 new class extends Component {
 
     use Toast;
@@ -108,7 +108,7 @@ new class extends Component {
             </x-card>
         </div>
     </div>
-    </div>
+    
     @endvolt
 
 </x-layouts.admin>

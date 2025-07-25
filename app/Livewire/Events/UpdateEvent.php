@@ -29,7 +29,7 @@ class UpdateEvent extends Component
     {
         $this->form->save();
 
-        return $this->redirect('/events');
+        return $this->redirect('/dashboard/events');
     }
 
     public function populateStatus()

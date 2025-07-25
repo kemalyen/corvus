@@ -4,7 +4,7 @@
 use function Laravel\Folio\{middleware, name};
 
 name('events.show');
-middleware(['auth', 'verified']);
+middleware(['auth', 'verified', 'role:admin']);
 ?>
 
 <x-layouts.admin>

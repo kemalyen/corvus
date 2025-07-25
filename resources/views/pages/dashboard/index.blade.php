@@ -4,13 +4,11 @@ use App\Models\Event;
 use App\Models\EventRegistration;
 
 use function Laravel\Folio\{middleware, name};
-use Livewire\Attributes\{Title, Layout};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 
 name('dashboard');
-middleware(['auth', 'verified']);
-
+middleware(['auth', 'verified', 'role:admin']);
 new class extends Component
 {
     use Toast;

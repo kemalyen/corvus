@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 		$middleware->alias([
-			'redirect-to-dashboard' => \App\Http\Middleware\RedirectToDashboard::class
+			'redirect-to-dashboard' => \App\Http\Middleware\RedirectToDashboard::class,
+            'role' => \jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyRole::class,
 		]);
         //
     })
