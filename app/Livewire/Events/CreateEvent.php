@@ -25,7 +25,7 @@ class CreateEvent extends Component
     {
         $this->form->store();
 
-        return $this->redirect('/events');
+        return $this->redirect('/dashboard/events');
     }
 
     public function populateStatus()

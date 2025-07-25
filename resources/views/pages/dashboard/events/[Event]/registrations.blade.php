@@ -8,7 +8,7 @@ use Mary\Traits\Toast;
 use Livewire\WithPagination; 
 
 name('events.registrations');
-middleware(['auth', 'verified']); 
+middleware(['auth', 'verified', 'role:admin']);
 new class extends Component {
 
     use Toast;

@@ -7,7 +7,8 @@ use App\Models\Event;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
- 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,13 +19,29 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Model::unguard();
+
+        EventRegistration::truncate();
+        Event::truncate();
+        User::truncate();
+
+        $this->call(PermissionsTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
+        $this->call(ConnectRelationshipsSeeder::class);
+        //$this->call('UsersTableSeeder');
+
+        Model::reguard();
+        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $events = Event::factory(10)->create();
 
         EventRegistration::factory(500)->recycle($events)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        $role = config('roles.models.role')::where('name', '=', 'Admin')->first();
+        $user->attachRole($role);
     }
 }

@@ -11,8 +11,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Attributes\Locked;
 
 name('profile.edit');
-middleware(['auth', 'verified']);
-
+middleware(['auth', 'verified', 'role:admin']);
 new class extends Component {
     #[Locked]
     public $user;

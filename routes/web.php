@@ -1,14 +1,10 @@
 <?php
-
-use App\Enums\EventStatus;
+ 
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Client\EventRegistration;
-use App\Models\Event;
-use App\Models\EventRegistration as ModelsEventRegistration;
 use Illuminate\Support\Facades\Route;
-
-use Livewire\Volt\Volt;
+ 
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +17,7 @@ use Livewire\Volt\Volt;
 |
 */
 
- 
+
 
 Route::redirect('home', '/')->name('home');
 
@@ -37,6 +33,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth', 'verified')->group(function () {
+
+    Route::get('/users/create', \App\Livewire\Users\CreateUser::class)
+        ->name('users.create');
+
+    Route::get('/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
+        ->name('users.update');
+
+
     Route::get('/events/create', \App\Livewire\Events\CreateEvent::class)
         ->name('events.create');
 
