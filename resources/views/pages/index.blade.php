@@ -9,8 +9,6 @@ use Livewire\WithPagination;
 
 
 name('home');
-middleware(['redirect-to-dashboard']);
-
 new class extends Component
 {
     use WithPagination;
@@ -49,7 +47,7 @@ new class extends Component
             'headers' => $this->headers()
         ];
     }
- 
+
     public function register(int $id)
     {
         return redirect()->route('event.registration', ['event' => $id]);
@@ -59,8 +57,7 @@ new class extends Component
 ?>
 
 <x-layouts.frontend>
-
-
+ 
     <x-slot name="title">
         {{ 'List all events' }}
     </x-slot>
@@ -68,7 +65,7 @@ new class extends Component
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Scheduled Events') }}
         </h2>
-    </x-slot> 
+    </x-slot>
 
     @volt('home.index')
     <div class="pb-5">

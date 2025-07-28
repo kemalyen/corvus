@@ -7,6 +7,7 @@ use App\Models\User;
 use jeremykenedy\LaravelRoles\Models\Role;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
 #[Layout('components.layouts.admin')]
 class UpdateUser extends Component
@@ -17,6 +18,7 @@ class UpdateUser extends Component
     public function mount(User $user)
     {
         $this->user = $user;
+        Gate::authorize('update-user', $user);
         $this->form->setUser($user);
     }
 

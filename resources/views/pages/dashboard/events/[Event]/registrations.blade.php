@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Event;
+use Illuminate\Support\Facades\Gate;
+
 use function Laravel\Folio\{middleware, name};
 use Livewire\Attributes\{Title, Layout};
 use Livewire\Volt\Component;
@@ -8,7 +10,7 @@ use Mary\Traits\Toast;
 use Livewire\WithPagination; 
 
 name('events.registrations');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin,organizer']);
 new class extends Component {
 
     use Toast;
@@ -41,7 +43,8 @@ new class extends Component {
 
     #[Layout('components.layouts.admin')]
     public function mount(Event $event)
-    {
+    {   
+        Gate::authorize('view-event', $event);
         $this->event = $event;
     }
 

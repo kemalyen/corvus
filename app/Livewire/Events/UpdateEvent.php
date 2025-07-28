@@ -5,6 +5,7 @@ namespace App\Livewire\Events;
 use App\Enums\EventStatus;
 use App\Livewire\Forms\EventForm;
 use App\Models\Event;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 use Livewire\Attributes\Layout;
@@ -21,6 +22,7 @@ class UpdateEvent extends Component
     public function mount(Event $event)
     {
         $this->event = $event;
+        Gate::authorize('update-event', $event);
         $this->populateStatus();
         $this->form->setEvent($event);
     }

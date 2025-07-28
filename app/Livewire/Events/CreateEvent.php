@@ -6,6 +6,7 @@ use App\Enums\EventStatus;
 use App\Livewire\Forms\EventForm;
 use App\Models\Event;
 use  Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -18,6 +19,7 @@ class CreateEvent extends Component
 
     public function mount()
     {
+        Gate::authorize('create-event');
         $this->populateStatus();
     }
 

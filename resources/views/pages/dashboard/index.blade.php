@@ -8,12 +8,10 @@ use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 
 name('dashboard');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin, organizer']);
 new class extends Component
 {
     use Toast;
-
-
 
     // Table headers
     public function headers(): array
@@ -30,8 +28,16 @@ new class extends Component
 
     public function registrations()
     {
+        $user = auth()->user();
         return EventRegistration::join('events', 'events.id', '=', 'event_registrations.event_id')
             ->select('event_registrations.*', 'events.title as event_title')
+            ->where(function ($query) use ($user) {
+                if ($user->isOrganizer()) {
+                    return $query->where('events.organizer_id', $user->id);
+                } else {
+                    return $query;
+                }
+            })
             ->orderByDesc('created_at')->take(30)->get();
     }
 

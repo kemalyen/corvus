@@ -4,13 +4,13 @@
 use function Laravel\Folio\{middleware, name};
 
 name('events.show');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin,organizer']);
 ?>
 
 <x-layouts.admin>
 
-  <x-slot name="title">
-       {{ __('Event Detail: ') . $event->title }}
+    <x-slot name="title">
+        {{ __('Event Detail: ') . $event->title }}
     </x-slot>
 
     <x-slot name="header">
@@ -20,17 +20,20 @@ middleware(['auth', 'verified', 'role:admin']);
     </x-slot>
 
     <div class="flex justify-end mb-4">
+        @can('view-event', $event)
         <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Registrations
-        </x-ui.text-link>
-        
-        <x-ui.text-link href="{{ route('events.update', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
-            Update Event
         </x-ui.text-link>
 
         <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Export Registration List
         </x-ui.text-link>
+        @endcan
+        @can('update-event', $event)
+        <x-ui.text-link href="{{ route('events.update', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+            Update Event
+        </x-ui.text-link>
+        @endcan
     </div>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded p-6">

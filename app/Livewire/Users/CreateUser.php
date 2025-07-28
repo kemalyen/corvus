@@ -3,10 +3,10 @@
 namespace App\Livewire\Users;
 
 use App\Livewire\Forms\UserForm;
-use App\Models\User;
 use jeremykenedy\LaravelRoles\Models\Role;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
 #[Layout('components.layouts.admin')]
 class CreateUser extends Component
@@ -18,6 +18,11 @@ class CreateUser extends Component
         $this->form->store();
 
         return $this->redirect('/dashboard/users');
+    }
+
+    public function mount()
+    {
+        Gate::authorize('create-user');
     }
 
     public function render()

@@ -26,6 +26,7 @@ class EventFactory extends Factory
             'capacity' => $this->faker->numberBetween(10, 100),
             'is_public' => $this->faker->boolean(80), // 80%
             'status' => fake()->randomElement(EventStatus::cases())->value,
+            'organizer_id' => \App\Models\User::factory(), // Assuming organizer is a User
             'created_at' => now(),
             'updated_at' => now(),
         ];

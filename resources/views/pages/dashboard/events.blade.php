@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\Event;
-
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
 use function Laravel\Folio\{middleware, name};
 
 name('events.index');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin,organizer']);
 new class extends Component {
 
     use Toast;
@@ -34,7 +35,15 @@ new class extends Component {
 
     public function events()
     {
+        $user = auth()->user();
         return Event::query()
+            ->where(function ($query) use ($user) {
+                if ($user->isOrganizer()) {
+                    return $query->where('organizer_id', $user->id);
+                } else {
+                    return $query;
+                }
+            })
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->when($this->search, function () {
                 return Event::where('title', 'like', $this->search . '%');
@@ -52,6 +61,7 @@ new class extends Component {
 
     public function delete(int $id)
     {
+        FacadesGate::authorize('delete-event', Event::findOrFail($id));
         $product = Event::findOrFail($id);
         $product->delete();
         $this->toast('Product deleted successfully.', 'success');
@@ -84,12 +94,14 @@ new class extends Component {
         </h2>
     </x-slot>
 
+    @can('create-event')
     <div class="flex justify-end mb-4">
         <x-ui.text-link href="{{ route('events.create') }}" class="btn-ghost btn-sm text-red-600">
             <x-icon name="o-plus" />
             Create Event
         </x-ui.text-link>
     </div>
+    @endcan
 
     @volt('events.index')
     <div class="pb-5">
@@ -98,17 +110,24 @@ new class extends Component {
                 <x-table :headers="$headers" :rows="$events" :sort-by="$sortBy" with-pagination>
                     @scope('actions', $event)
                     <div class="flex space-x-2">
+                        @can('delete-event', $event)
                         <x-button wire:click="delete({{ $event['id'] }})" wire:confirm="Are you sure?" spinner class="btn-ghost btn-sm text-red-600" icon="o-trash" />
+                        @endcan
+                        @can('update-event', $event)
                         <x-button wire:click="edit({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="c-pencil-square" />
+                        @endcan
+                        @can('view-event', $event)
                         <x-button wire:click="show({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
                         <x-button wire:click="registrations({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-user" />
+                        @endcan
+
                     </div>
                     @endscope
                 </x-table>
             </x-card>
         </div>
     </div>
-    
+
     @endvolt
 
 </x-layouts.admin>

@@ -34,10 +34,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth', 'verified')->group(function () {
 
-    Route::get('/users/create', \App\Livewire\Users\CreateUser::class)
+    Route::get('/dashboard/users/create', \App\Livewire\Users\CreateUser::class)
         ->name('users.create');
 
-    Route::get('/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
+    Route::get('/dashboard/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
         ->name('users.update');
 
 

@@ -2,6 +2,9 @@
 
 use App\Exports\RegistrationsExport;
 use App\Models\Event;
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate as FacadesGate;
+
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
@@ -9,7 +12,7 @@ use Livewire\WithPagination;
 use Illuminate\View\View;
 
 name('events.registrations.export');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin, organizer']);
 new class extends Component {
 
     use Toast;
@@ -26,6 +29,7 @@ new class extends Component {
     public function mount(Event $event)
     {
         $this->event = $event;
+        FacadesGate::authorize('view-event', $event);
         $this->registration = $event->registrations()
             ->orderBy('created_at', 'desc')->get();
     }

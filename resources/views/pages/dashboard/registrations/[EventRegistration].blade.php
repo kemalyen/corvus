@@ -10,7 +10,7 @@ use function Laravel\Folio\{middleware, name};
 use Mary\Traits\Toast;
 
 name('events.registrations.show');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin,organizer']);
 new class extends Component {
 
     use Toast;

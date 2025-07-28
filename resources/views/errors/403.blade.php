@@ -1,14 +1,8 @@
-<x-layouts.frontend>
-
-
+<x-layouts.frontend> 
     <x-slot name="title">
     403 Forbidden
     </x-slot>
-    <x-slot name="header">
-        <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
-           403 Forbidden
-        </h2>
-    </x-slot> 
+
 
     @volt('home.index')
     <div class="pb-5">
