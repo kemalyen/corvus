@@ -62,7 +62,8 @@ enum EventStatus: string
             ];
         });
 
-        $return->prepend(['id' => '', 'name' => 'Select Status'], 0);
+        $return->prepend(['id' => '', 'name' => 'Select Status'], -1);
+
         return $return;
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Forms;
 
+use App\Exceptions\RateLimiterException;
 use App\Mail\NewEventRegistration;
 use App\Models\Event;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -60,6 +62,11 @@ class EventRegistrationForm extends Form
 
     public function store(): void
     {
+        if (RateLimiter::tooManyAttempts('register-event:' . request()->ip(), $perMinute = 3)) {
+            throw new RateLimiterException('You are registering events too quickly. Please wait a moment before trying again!.');
+        }
+        RateLimiter::increment('register-event:' . request()->ip());
+
         $this->validate();
 
         $this->event->registrations()->create([
@@ -73,11 +80,12 @@ class EventRegistrationForm extends Form
         Mail::to($this->email)->queue(new NewEventRegistration($this->event, [
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone]));
- 
+            'phone' => $this->phone
+        ]));
+
         $this->reset(['name', 'email', 'phone']);
 
-        
+
         session()->flash('register-status', 'Thank you for registering for the event!');
     }
 }

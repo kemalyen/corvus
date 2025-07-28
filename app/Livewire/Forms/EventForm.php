@@ -53,7 +53,7 @@ class EventForm extends Form
         $this->validate();
 
         $status = EventStatus::tryFrom($this->status) ?? EventStatus::DRAFT;
-
+        $user = auth()->user();
         Event::create([
             'title' => $this->title,
             'description' => $this->description,
@@ -63,6 +63,7 @@ class EventForm extends Form
             'capacity' => $this->capacity,
             'is_public' => ($this->is_public) ? true : false,
             'status' => $status,
+            'organizer_id' => $user->id,
         ]);
     }
 

@@ -3,9 +3,11 @@
 namespace App\Livewire\Events;
 
 use App\Enums\EventStatus;
+use App\Exceptions\RateLimiterException;
 use App\Livewire\Forms\EventForm;
 use App\Models\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Component;
 
 use Livewire\Attributes\Layout;
@@ -26,9 +28,13 @@ class UpdateEvent extends Component
         $this->populateStatus();
         $this->form->setEvent($event);
     }
-    
+
     public function save()
     {
+        if (RateLimiter::attempt('update-event', 1)) {
+            session()->flash('error', 'You are updating events too quickly. Please wait a moment before trying again.');
+            return;
+        }
         $this->form->save();
 
         return $this->redirect('/dashboard/events');
@@ -40,6 +46,12 @@ class UpdateEvent extends Component
     }
     public function render()
     {
+        $user = auth()->user();
+
+        if (RateLimiter::tooManyAttempts('update-event:' . $user->id, $perMinute = 3)) {
+            throw new RateLimiterException('You are updating events too quickly. Please wait a moment before trying again.');
+        }
+        RateLimiter::increment('update-event:' . $user->id);
         return view('livewire.events.update-event', [
             'event' => $this->event
         ]);

@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Client;
 
+use App\Exceptions\RateLimiterException;
 use App\Livewire\Forms\EventRegistrationForm;
 use App\Models\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Layout;
-use Livewire\Component; 
+use Livewire\Component;
 
 /**
  * EventRegistration Component

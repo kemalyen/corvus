@@ -6,6 +6,7 @@ use App\Policies\EventPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('view-event', [EventPolicy::class, 'view']);
         Gate::define('view-any-event', [EventPolicy::class, 'viewAny']);
 
+   
     }
 }

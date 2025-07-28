@@ -21,6 +21,7 @@ class Event extends Model
         'capacity',
         'is_public',
         'status',
+        'organizer_id',
     ];
 
     protected $casts = [

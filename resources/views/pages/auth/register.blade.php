@@ -35,6 +35,7 @@ new class extends Component
             'password' => Hash::make($this->password),
         ]);
 
+        $user->assignRole('organizer');
         event(new Registered($user));
 
         Auth::login($user, true);
