@@ -15,8 +15,7 @@ new class extends Component {
     use Toast, ClearsFilters;
     use WithPagination;
 
-    public int $country_id = 0;
-
+   
     public bool $drawer = false;
 
     public string $search = '';
@@ -33,10 +32,7 @@ new class extends Component {
         if (!empty($this->search)) {
             $count++;
         }
-
-        if ($this->country_id > 0) {
-            $count++;
-        }
+ 
 
         return $count;
     }
@@ -116,7 +112,6 @@ new class extends Component {
     @volt('users.index')
     <div class="pb-5">
         <div class="mx-auto space-y-6">
-
 
             <x-header title="Users" separator progress-indicator>
                 <x-slot:middle class="!justify-end">

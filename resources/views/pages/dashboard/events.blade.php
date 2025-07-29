@@ -7,17 +7,36 @@ use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
 use function Laravel\Folio\{middleware, name};
+use App\Traits\ClearsFilters;
+use Illuminate\Support\Facades\Log;
 
 name('events.index');
 middleware(['auth', 'verified', 'role:admin,organizer']);
 new class extends Component {
 
-    use Toast;
+    use Toast, ClearsFilters;
     use WithPagination;
 
     public string $search = '';
 
+    public bool $drawer = false;
     public array $sortBy = ['column' => 'title', 'direction' => 'desc'];
+
+    public int $perPage = 10;
+
+
+    // Filter count
+    public function filters()
+    {
+        $count = 0;
+
+        if (!empty($this->search)) {
+            $count++;
+        }
+
+
+        return $count;
+    }
 
     // Table headers
     public function headers(): array
@@ -37,6 +56,10 @@ new class extends Component {
     {
         $user = auth()->user();
         return Event::query()
+            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
+            ->when($this->search, function () {
+                return Event::where(fn($query) => $query->where('title', 'like', $this->search . '%')->orWhere('organizer', 'like', $this->search . '%'));
+            })
             ->where(function ($query) use ($user) {
                 if ($user->isOrganizer()) {
                     return $query->where('organizer_id', $user->id);
@@ -44,10 +67,8 @@ new class extends Component {
                     return $query;
                 }
             })
-            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
-            ->when($this->search, function () {
-                return Event::where('title', 'like', $this->search . '%');
-            })->paginate(10);
+
+            ->paginate(10);
     }
 
 
@@ -55,7 +76,8 @@ new class extends Component {
     {
         return [
             'events' => $this->events(),
-            'headers' => $this->headers()
+            'headers' => $this->headers(),
+            'filters' => $this->filters(),
         ];
     }
 
@@ -106,6 +128,16 @@ new class extends Component {
     @volt('events.index')
     <div class="pb-5">
         <div class="mx-auto space-y-6">
+
+            <x-header title="Events" separator progress-indicator>
+                <x-slot:middle class="!justify-end">
+                    <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
+                </x-slot:middle>
+                <x-slot:actions>
+                    <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" :badge="$filters" />
+                </x-slot:actions>
+            </x-header>
+
             <x-card shadow>
                 <x-table :headers="$headers" :rows="$events" :sort-by="$sortBy" with-pagination>
                     @scope('actions', $event)
@@ -125,6 +157,21 @@ new class extends Component {
                     @endscope
                 </x-table>
             </x-card>
+
+            <!-- FILTER DRAWER -->
+            <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
+                <div class="grid gap-5">
+                    <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass"
+                        @keydown.enter="$wire.drawer = false" />
+
+                </div>
+
+                <x-slot:actions>
+                    <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner />
+                    <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
+                </x-slot:actions>
+            </x-drawer>
+
         </div>
     </div>
 
