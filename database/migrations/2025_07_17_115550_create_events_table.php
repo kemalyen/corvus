@@ -2,6 +2,7 @@
 
 use App\Enums\EventStatus;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,13 +19,16 @@ return new class extends Migration
 
             $table->text('title');
             $table->text('description')->nullable();
+            $table->string('slug')->unique()->nullable();
             $table->dateTime('start_time');
             $table->text('location')->nullable();
             $table->text('organizer')->nullable();
             $table->integer('capacity')->default(0);
             $table->boolean('is_public')->default(true); 
+            $table->foreignIdFor(User::class, 'organizer_id')->constrained()->onDelete('cascade');
             $table->enum('status', array_column(EventStatus::cases(), 'value'))->default(EventStatus::PENDING->value);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

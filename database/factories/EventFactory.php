@@ -20,12 +20,14 @@ class EventFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
+            //'slug' => $this->faker->unique()->slug,
             'start_time' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
             'location' => $this->faker->address,
             'organizer' => $this->faker->name,
             'capacity' => $this->faker->numberBetween(10, 100),
             'is_public' => $this->faker->boolean(80), // 80%
             'status' => fake()->randomElement(EventStatus::cases())->value,
+            'organizer_id' => \App\Models\User::factory(), // Assuming organizer is a User
             'created_at' => now(),
             'updated_at' => now(),
         ];

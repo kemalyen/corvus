@@ -33,7 +33,15 @@ class DatabaseSeeder extends Seeder
 
         Model::reguard();
         config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        $events = Event::factory(10)->create();
+
+        $organizerRole = config('roles.models.role')::where('name', '=', 'Organizer')->first();
+        $organizers = User::factory(3)->create();
+
+        $organizers->each(function ($user) use ($organizerRole) {
+            $user->attachRole($organizerRole);
+        });
+
+        $events = Event::factory(10)->recycle($organizers)->create();
 
         EventRegistration::factory(500)->recycle($events)->create();
 

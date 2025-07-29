@@ -2,6 +2,9 @@
 
 use App\Exports\RegistrationsExport;
 use App\Models\Event;
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate as FacadesGate;
+
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
@@ -9,7 +12,7 @@ use Livewire\WithPagination;
 use Illuminate\View\View;
 
 name('events.registrations.export');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin,organizer']);
 new class extends Component {
 
     use Toast;
@@ -26,6 +29,7 @@ new class extends Component {
     public function mount(Event $event)
     {
         $this->event = $event;
+        FacadesGate::authorize('view-event', $event);
         $this->registration = $event->registrations()
             ->orderBy('created_at', 'desc')->get();
     }
@@ -55,17 +59,17 @@ new class extends Component {
     </x-slot>
 
     <div class="flex justify-end mb-4">
-        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.show', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Visit back Event
         </x-ui.text-link>
 
-        <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Registration List
         </x-ui.text-link>
 
     </div>
 
-    @volt('events.registrations')
+    @volt('events.export')
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
         <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">Export Registrations</h3>

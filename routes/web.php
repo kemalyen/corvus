@@ -21,25 +21,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('home', '/')->name('home');
 
-Route::get('events/{event}/register', EventRegistration::class)->name('event.registration');
+Route::get('events/{event:slug}/register', EventRegistration::class)->name('event.registration');
 
 
 Route::middleware('auth')->group(function () {
+
     Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
         ->middleware('signed')
         ->name('verification.verify');
+
     Route::post('logout', LogoutController::class)
         ->name('logout');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
 
-    Route::get('/users/create', \App\Livewire\Users\CreateUser::class)
+    Route::get('/dashboard/users/create', \App\Livewire\Users\CreateUser::class)
         ->name('users.create');
 
-    Route::get('/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
+    Route::get('/dashboard/users/{user}/update', \App\Livewire\Users\UpdateUser::class)
         ->name('users.update');
-
 
     Route::get('/events/create', \App\Livewire\Events\CreateEvent::class)
         ->name('events.create');

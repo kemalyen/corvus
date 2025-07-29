@@ -6,14 +6,16 @@ use App\Models\EventRegistration;
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
+use Livewire\WithPagination;
 
 name('dashboard');
-middleware(['auth', 'verified', 'role:admin']);
+middleware(['auth', 'verified', 'role:admin, organizer']);
 new class extends Component
 {
     use Toast;
 
-
+    public int $perPage = 10;
+     use WithPagination;
 
     // Table headers
     public function headers(): array
@@ -30,9 +32,18 @@ new class extends Component
 
     public function registrations()
     {
+        $user = auth()->user();
         return EventRegistration::join('events', 'events.id', '=', 'event_registrations.event_id')
             ->select('event_registrations.*', 'events.title as event_title')
-            ->orderByDesc('created_at')->take(30)->get();
+            ->where(function ($query) use ($user) {
+                if ($user->isOrganizer()) {
+                    return $query->where('events.organizer_id', $user->id);
+                } else {
+                    return $query;
+                }
+            })
+            ->orderByDesc('created_at')
+            ->paginate($this->perPage);
     }
 
 
@@ -77,10 +88,14 @@ new class extends Component
                         <div class="pb-5">
                             <div class="mx-auto space-y-6">
                                 <x-card shadow>
-                                    <x-table :headers="$headers" :rows="$registrations">
-                                        @scope('actions', $event)
+
+                                    <x-table :headers="$headers" :rows="$registrations"
+                                        with-pagination
+                                        per-page="perPage"
+                                        :per-page-values="[3, 5, 10]">
+                                        @scope('actions', $registration)
                                         <div class="flex space-x-2">
-                                            <x-button wire:click="show({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
+                                            <x-button wire:click="show({{ $registration['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
                                         </div>
                                         @endscope
                                     </x-table>

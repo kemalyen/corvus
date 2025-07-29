@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Enums\RegistrationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class EventRegistration extends Model
+class EventRegistration extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\RegistrationFactory> */
     use HasFactory;
-
+ use \OwenIt\Auditing\Auditable;
     protected $fillable = [
         'event_id',
         'name',

@@ -9,8 +9,6 @@ use Livewire\WithPagination;
 
 
 name('home');
-middleware(['redirect-to-dashboard']);
-
 new class extends Component
 {
     use WithPagination;
@@ -23,9 +21,8 @@ new class extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'title', 'label' => 'Title', 'class' => 'w-64'],
-            ['key' => 'start_time_formatted', 'label' => 'Start Date', 'class' => 'w-8'],
+            ['key' => 'start_time_formatted', 'label' => 'Event Date', 'class' => 'w-8'],
             ['key' => 'organizer', 'label' => 'Organizer', 'class' => 'w-32'],
 
         ];
@@ -49,18 +46,18 @@ new class extends Component
             'headers' => $this->headers()
         ];
     }
- 
+
     public function register(int $id)
     {
-        return redirect()->route('event.registration', ['event' => $id]);
+        $slug = Event::findOrFail($id)->slug;
+        return redirect()->route('event.registration', ['event' => $slug]);
     }
 };
 
 ?>
 
 <x-layouts.frontend>
-
-
+ 
     <x-slot name="title">
         {{ 'List all events' }}
     </x-slot>
@@ -68,7 +65,7 @@ new class extends Component
         <h2 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Scheduled Events') }}
         </h2>
-    </x-slot> 
+    </x-slot>
 
     @volt('home.index')
     <div class="pb-5">

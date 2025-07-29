@@ -3,10 +3,10 @@
 
     <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0  min-h-[400px]">
 
-        <div class="lg:w-full mx-auto px-8 ">
+        <div class="lg:w-full mx-auto px-8 space-y-6">
             <h3 class="text-2xl">{{ $event->title }}</h3>
             <p>{{ $event->description }}</p>
-            Location: {{ $event->location }}
+            <p>Location: {{ $event->location }}</p>
             <p>Organizer: {{ $event->organizer }}</p>
             <p>Start Time: {{ $event->start_time->format('d M Y H:i') }}</p>
         </div>

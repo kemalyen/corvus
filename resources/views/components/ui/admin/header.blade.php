@@ -10,11 +10,19 @@
             <!-- Navigation -->
             <div :class="{ 'absolute left-0' : open, 'relative' : !open }" class="flex flex-col justify-start w-full sm:relative sm:flex-row sm:justify-between" x-cloak>
                 @php
-                $navLinks = [
-                'Dashboard' => '/dashboard',
-                'Events' => '/dashboard/events',
-                'Users' => '/dashboard/users',
-                ];
+
+                $user = auth()->user();
+                $navLinks['Dashboard'] = '/dashboard';
+
+                if ($user->isOrganizer() || $user->isAdmin()) {
+                $navLinks['Events'] ='/dashboard/events';
+                }
+
+                if ($user->isAdmin()) {
+                $navLinks['Users'] = '/dashboard/users';
+                }
+
+                
                 @endphp
                 <!-- Navigation Links -->
                 <nav :class="{'flex flex-col bg-white dark:bg-gray-900 relative z-50 w-full h-auto px-4 py-5 left-0 mt-16': open, 'hidden': ! open}" class="items-center space-y-3 sm:space-x-3 sm:space-y-0 sm:mt-0 sm:bg-transparent sm:p-0 sm:relative sm:flex sm:-my-px sm:ml-8" x-cloak>

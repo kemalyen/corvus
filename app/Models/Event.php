@@ -6,11 +6,16 @@ use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
-class Event extends Model
+class Event extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory;
+    use HasFactory, HasSlug;
+
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'title',
@@ -21,6 +26,8 @@ class Event extends Model
         'capacity',
         'is_public',
         'status',
+        'organizer_id',
+        'slug',
     ];
 
     protected $casts = [
@@ -29,10 +36,31 @@ class Event extends Model
         'status' => EventStatus::class,
     ];
 
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->slugsShouldBeNoLongerThan(50);
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function registrations()
     {
         return $this->hasMany(EventRegistration::class);
-    }   
+    }
 
     protected function status_value(): Attribute
     {

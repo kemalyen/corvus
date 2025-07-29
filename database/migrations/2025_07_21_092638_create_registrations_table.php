@@ -22,11 +22,9 @@ return new class extends Migration
             $table->timestamp('registered_at')->useCurrent();
             $table->enum('status', array_column(RegistrationStatus::cases(), 'value'))->default(RegistrationStatus::PENDING->value);
             $table->text('notes')->nullable();
-
             $table->unique(['event_id', 'email']);
-
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
