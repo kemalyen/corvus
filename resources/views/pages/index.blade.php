@@ -21,9 +21,8 @@ new class extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'title', 'label' => 'Title', 'class' => 'w-64'],
-            ['key' => 'start_time_formatted', 'label' => 'Start Date', 'class' => 'w-8'],
+            ['key' => 'start_time_formatted', 'label' => 'Event Date', 'class' => 'w-8'],
             ['key' => 'organizer', 'label' => 'Organizer', 'class' => 'w-32'],
 
         ];
@@ -50,7 +49,8 @@ new class extends Component
 
     public function register(int $id)
     {
-        return redirect()->route('event.registration', ['event' => $id]);
+        $slug = Event::findOrFail($id)->slug;
+        return redirect()->route('event.registration', ['event' => $slug]);
     }
 };
 

@@ -31,10 +31,13 @@ class UpdateEvent extends Component
 
     public function save()
     {
-        if (RateLimiter::attempt('update-event', 1)) {
-            session()->flash('error', 'You are updating events too quickly. Please wait a moment before trying again.');
-            return;
+         $user = auth()->user();
+        if (RateLimiter::tooManyAttempts('update-event:' . $user->id, $perMinute = 5)) {
+            throw new RateLimiterException('You are updating events too quickly. Please wait a moment before trying again.');
         }
+
+        RateLimiter::increment('update-event:'.$user->id);
+
         $this->form->save();
 
         return $this->redirect('/dashboard/events');
@@ -44,14 +47,17 @@ class UpdateEvent extends Component
     {
         $this->status = EventStatus::toCollection();
     }
+
     public function render()
     {
         $user = auth()->user();
 
-        if (RateLimiter::tooManyAttempts('update-event:' . $user->id, $perMinute = 3)) {
+        if (RateLimiter::tooManyAttempts('update-event:' . $user->id, $perMinute = 5)) {
             throw new RateLimiterException('You are updating events too quickly. Please wait a moment before trying again.');
         }
-        RateLimiter::increment('update-event:' . $user->id);
+
+        RateLimiter::increment('update-event:'.$user->id);
+
         return view('livewire.events.update-event', [
             'event' => $this->event
         ]);

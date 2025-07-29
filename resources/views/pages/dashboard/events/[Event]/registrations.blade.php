@@ -53,7 +53,8 @@ new class extends Component {
     {
         return [
             'registrations' => $this->registrations(),
-            'headers' => $this->headers()
+            'headers' => $this->headers(),
+            'event' => $this->event,
         ];
     }
 
@@ -77,11 +78,11 @@ new class extends Component {
     </x-slot>
 
     <div class="flex justify-end mb-4">
-        <x-ui.text-link href="{{ route('events.show', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.show', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Visit back Event
         </x-ui.text-link>
 
-        <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Export Registration List
         </x-ui.text-link>
 

@@ -21,16 +21,16 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
 
     <div class="flex justify-end mb-4">
         @can('view-event', $event)
-        <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.registrations', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Registrations
         </x-ui.text-link>
 
-        <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.registrations.export', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Export Registration List
         </x-ui.text-link>
         @endcan
         @can('update-event', $event)
-        <x-ui.text-link href="{{ route('events.update', ['event' => $event->id]) }}" class="btn-ghost btn-sm text-red-600 p-2">
+        <x-ui.text-link href="{{ route('events.update', ['event' => $event->slug]) }}" class="btn-ghost btn-sm text-red-600 p-2">
             Update Event
         </x-ui.text-link>
         @endcan
@@ -58,6 +58,14 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
         <div class="mb-4">
             <strong>{{ __('Description:') }}</strong>
             <p>{{ $event->description }}</p>
+        </div>
+        <div class="mb-4">
+            <strong>{{ __('Registration Link:') }}</strong>
+            <p class="text-gray-600 dark:text-gray-400">
+                <x-ui.link href="{{ route('event.registration', ['event' => $event->slug]) }}" class="text-blue-600 hover:underline">
+                    {{ route('event.registration', ['event' => $event->slug]) }}
+                </x-ui.link>
+            </p>
         </div>
     </div>
 

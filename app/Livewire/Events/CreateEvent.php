@@ -42,7 +42,7 @@ class CreateEvent extends Component
     {
         $user = auth()->user();
 
-        if (RateLimiter::tooManyAttempts('create-event:' . $user->id, $perMinute = 1)) {
+        if (RateLimiter::tooManyAttempts('create-event:' . $user->id, $perMinute = 5)) {
             throw new RateLimiterException('You are creating events too quickly. Please wait a moment before trying again.');
         }
 

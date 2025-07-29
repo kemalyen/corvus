@@ -68,7 +68,7 @@ new class extends Component {
                 }
             })
 
-            ->paginate(10);
+            ->paginate($this->perPage);
     }
 
 
@@ -86,22 +86,25 @@ new class extends Component {
         FacadesGate::authorize('delete-event', Event::findOrFail($id));
         $product = Event::findOrFail($id);
         $product->delete();
-        $this->toast('Product deleted successfully.', 'success');
+        $this->toast('success', 'Product deleted successfully');
     }
 
     public function edit(int $id)
     {
-        return redirect()->route('events.update', ['event' => $id]);
+        $slug = Event::findOrFail($id);
+        return redirect()->route('events.update', ['event' => $slug]);
     }
 
     public function show(int $id)
     {
-        return redirect()->route('events.show', ['event' => $id]);
+        $slug = Event::findOrFail($id);
+        return redirect()->route('events.show', ['event' => $slug]);
     }
 
     public function registrations(int $id)
     {
-        return redirect()->route('events.registrations', ['event' => $id]);
+        $slug = Event::findOrFail($id);
+        return redirect()->route('events.registrations', ['event' => $slug]);
     }
 };
 ?>
@@ -139,7 +142,10 @@ new class extends Component {
             </x-header>
 
             <x-card shadow>
-                <x-table :headers="$headers" :rows="$events" :sort-by="$sortBy" with-pagination>
+                <x-table :headers="$headers" :rows="$events" :sort-by="$sortBy" with-pagination
+                    with-pagination
+                    per-page="perPage"
+                    :per-page-values="[3, 5, 10]">
                     @scope('actions', $event)
                     <div class="flex space-x-2">
                         @can('delete-event', $event)

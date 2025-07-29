@@ -20,6 +20,7 @@ class EventFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
+            //'slug' => $this->faker->unique()->slug,
             'start_time' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
             'location' => $this->faker->address,
             'organizer' => $this->faker->name,
