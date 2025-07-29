@@ -67,6 +67,32 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
                 </x-ui.link>
             </p>
         </div>
+        @role('admin')
+        <div class="mb-4">
+            <strong>{{ __('Audits:') }}</strong>
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-8">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Date</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Event</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">User</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Actor</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach($event->audits as $audit)
+                    <tr>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $audit->created_at->format('Y-m-d H:i:s') }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $audit->event }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $audit->user->name  }} / {{$audit->user->email}}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $audit->user ? $audit->user->name : 'System' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endrole
+
     </div>
 
 

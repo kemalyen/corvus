@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'organizer_id')->constrained()->onDelete('cascade');
             $table->enum('status', array_column(EventStatus::cases(), 'value'))->default(EventStatus::PENDING->value);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
