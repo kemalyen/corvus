@@ -21,6 +21,8 @@ class EventRegistrationForm extends Form
 
     public string $phone = '';
 
+    public ?string $registration_code = null;
+
     public function rules(): array
     {
         return [
@@ -40,6 +42,16 @@ class EventRegistrationForm extends Form
                 'string',
                 'max:20',
             ],
+            'registration_code' => [
+                'nullable',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (!$this->event->is_public && $value !== $this->event->registration_code) {
+                        $fail('The registration code is invalid.');
+                    }
+                },
+            ],  
         ];
     }
 
@@ -83,7 +95,7 @@ class EventRegistrationForm extends Form
             'phone' => $this->phone
         ]));
 
-        $this->reset(['name', 'email', 'phone']);
+        $this->reset(['name', 'email', 'phone', 'registration_code']);
 
 
         session()->flash('register-status', 'Thank you for registering for the event!');

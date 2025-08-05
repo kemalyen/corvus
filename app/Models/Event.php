@@ -30,6 +30,16 @@ class Event extends Model implements Auditable
         'slug',
     ];
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($event) {
+            $event->registration_code = strtoupper(bin2hex(random_bytes(4)));
+        });
+    }
+    
     protected $casts = [
         'start_time' => 'datetime:Y-m-d H:i',
         'is_public' => 'boolean',

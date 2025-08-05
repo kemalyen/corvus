@@ -47,6 +47,7 @@ new class extends Component {
             ['key' => 'start_time_formatted', 'label' => 'Start Date', 'class' => 'w-8'],
             ['key' => 'organizer', 'label' => 'Organizer', 'class' => 'w-32'],
             ['key' => 'capacity', 'label' => 'Capacity', 'class' => 'w-16'],
+            ['key' => 'registrations_count', 'label' => 'Registrations', 'class' => 'w-16'],
             ['key' => 'status', 'label' => 'Status', 'class' => 'w-24'],
             ['key' => 'public_status', 'label' => 'Public', 'class' => 'w-16'],
         ];
@@ -55,7 +56,9 @@ new class extends Component {
     public function events()
     {
         $user = auth()->user();
+;
         return Event::query()
+            ->withCount('registrations')             
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->when($this->search, function () {
                 return Event::where(fn($query) => $query->where('title', 'like', $this->search . '%')->orWhere('organizer', 'like', $this->search . '%'));

@@ -52,7 +52,7 @@ class EventForm extends Form
     {
         $this->validate();
 
-        $status = EventStatus::tryFrom($this->status) ?? EventStatus::DRAFT;
+        $status = EventStatus::fromKey($this->status) ?? EventStatus::DRAFT;
         $user = auth()->user();
         Event::create([
             'title' => $this->title,
@@ -65,6 +65,7 @@ class EventForm extends Form
             'status' => $status,
             'organizer_id' => $user->id,
         ]);
+ 
     }
 
     public function save(): void

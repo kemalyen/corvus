@@ -33,7 +33,6 @@
 
 
                         <x-slot:actions>
-                            <x-button label="Cancel" />
                             <x-button label="Create" class="btn-seconday" type="primary" submit="true" spinner="save" />
                         </x-slot:actions>
                     </x-form>

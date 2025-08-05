@@ -7,7 +7,7 @@ enum RegistrationStatus: string
     case PENDING = 'Pending';
     case CONFIRMED = 'Confirmed';
     case CANCELLED = 'Cancelled';
-    case WAITLISTED = 'Waitlisted';
+    case WAITLISTED = 'Waitlisted'; 
 
     public static function fromValue(string $value): RegistrationStatus
     {
