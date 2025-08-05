@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Client;
 
+use App\Enums\RegistrationStatus;
 use App\Exceptions\RateLimiterException;
 use App\Livewire\Forms\EventRegistrationForm;
 use App\Models\Event;
@@ -18,7 +19,6 @@ use Livewire\Component;
 #[Layout('components.layouts.frontend')]
 class EventRegistration extends Component
 {
-
     public $event;
     public EventRegistrationForm $form;
 
@@ -35,8 +35,11 @@ class EventRegistration extends Component
 
     public function render()
     {
+        $registrations_count = $this->event->registrations()->where('status', RegistrationStatus::CONFIRMED->value)->count();
+        
         return view('livewire.client.event-registration', [
             'event' => $this->event,
+            'registrations_count' => $registrations_count,
         ])->title('Event Registration - ' . $this->event->title);
     }
 }
