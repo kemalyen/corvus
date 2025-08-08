@@ -145,6 +145,7 @@ new class extends Component {
             </x-header>
 
             <x-card shadow>
+                 @if($events && $events->count())
                 <x-table :headers="$headers" :rows="$events" :sort-by="$sortBy" with-pagination
                     with-pagination
                     per-page="perPage"
@@ -161,10 +162,14 @@ new class extends Component {
                         <x-button wire:click="show({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-link" />
                         <x-button wire:click="registrations({{ $event['id'] }})" class="btn-ghost btn-sm text-red-600" icon="o-user" />
                         @endcan
-
                     </div>
                     @endscope
                 </x-table>
+                @else
+                <div class="text-center text-gray-500 dark:text-gray-400">
+                    No events found.
+                </div>
+                @endif
             </x-card>
 
             <!-- FILTER DRAWER -->

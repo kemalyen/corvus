@@ -15,7 +15,7 @@ new class extends Component
     use Toast;
 
     public int $perPage = 10;
-     use WithPagination;
+    use WithPagination;
 
     // Table headers
     public function headers(): array
@@ -89,6 +89,7 @@ new class extends Component
                             <div class="mx-auto space-y-6">
                                 <x-card shadow>
 
+                                    @if($registrations && $registrations->count())
                                     <x-table :headers="$headers" :rows="$registrations"
                                         with-pagination
                                         per-page="perPage"
@@ -99,6 +100,12 @@ new class extends Component
                                         </div>
                                         @endscope
                                     </x-table>
+                                    
+                                    @else
+                                    <div class="text-center text-gray-500 dark:text-gray-400">
+                                        No registrations found.
+                                    </div>
+                                    @endif
                                 </x-card>
                             </div>
                         </div>
