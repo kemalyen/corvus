@@ -53,7 +53,7 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
             <strong>{{ __('Status:') }}</strong> {{ $event->status->value }}
         </div>
         <div class="mb-4">
-            <strong>{{ __('Public:') }}</strong> {{ $event->public_status }}
+            <strong>{{ __('Visiblity:') }}</strong> {{ $event->public_status }} <span class="bg-slate-200 p-2 font-bold">{{ !$event->is_public ? 'Registration code: ' .$event->registration_code : '' }}</span>
         </div>
         <div class="mb-4">
             <strong>{{ __('Description:') }}</strong>

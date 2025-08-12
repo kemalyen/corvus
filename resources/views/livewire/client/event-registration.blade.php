@@ -8,8 +8,7 @@
             <p>Location: {{ $event->location }}</p>
             <p>Organizer: {{ $event->organizer }}</p>
             <p>Start Time: {{ $event->start_time->format('d M Y H:i') }}</p>
-        </div>
-
+        </div> 
         <div class="mx-auto px-8 lg:ml-8 lg:mt-0 mt-8 w-full lg:w-3/5">
             <div class="mx-auto space-y-6 ">
                 <section
@@ -19,9 +18,13 @@
                         {{ session('register-status') }}
                     </div>
                     @endif
-                    @if( $event->status !== \App\Enums\EventStatus::SCHEDULED )
+                    @if( $event->status !== \App\Enums\EventStatus::SCHEDULED)
                     <div class="alert alert-warning mb-4">
                         This event is not open for registration.
+                    </div>
+                    @elseif($registrations_count >= $event->capacity)
+                    <div class="alert alert-warning mb-4">
+                        This event has reached its capacity.
                     </div>
                     @else
                     <h3 class="text-lg font-semibold mb-4">Register for Event</h3>
@@ -35,6 +38,11 @@
                         <x-input label="Name" wire:model="form.name" />
                         <x-input label="Email" wire:model="form.email" />
                         <x-input label="Phone" wire:model="form.phone" />
+
+                        @if(!$event->is_public)
+                        <x-input label="Registration Code" wire:model="form.registration_code" placeholder="Enter registration code" />
+                        @endif
+
                         <x-slot:actions>
                             <x-button label="Cancel" />
                             <x-button label="Register" class="btn-seconday g-recaptcha" type="primary" submit="true" spinner="save"                

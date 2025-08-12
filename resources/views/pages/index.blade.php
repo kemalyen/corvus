@@ -33,6 +33,7 @@ new class extends Component
         return Event::query()
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->where('status', EventStatus::SCHEDULED)
+            ->where('is_public', 1)
             ->when($this->search, function () {
                 return Event::where('title', 'like', $this->search . '%');
             })->paginate(10);
