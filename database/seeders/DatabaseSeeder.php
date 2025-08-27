@@ -19,12 +19,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Model::unguard();
 
-        EventRegistration::truncate();
-        Event::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;'); 
+        Model::unguard();
         User::truncate();
+        Event::truncate();
+        EventRegistration::truncate();
+      
 
         $this->call(PermissionsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
         //$this->call('UsersTableSeeder');
 
         Model::reguard();
-        config('database.connections.mysql') ?? DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $organizerRole = config('roles.models.role')::where('name', '=', 'Organizer')->first();
         $organizers = User::factory(3)->create();

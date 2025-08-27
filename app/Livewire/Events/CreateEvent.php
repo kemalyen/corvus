@@ -35,7 +35,7 @@ class CreateEvent extends Component
 
     public function populateStatus()
     {
-        $this->status = EventStatus::toCollection();
+        $this->status = EventStatus::creatingStatus();
     }
 
     public function render()

@@ -58,7 +58,7 @@ new class extends Component
 ?>
 
 <x-layouts.frontend>
- 
+
     <x-slot name="title">
         {{ 'List all events' }}
     </x-slot>
@@ -82,7 +82,6 @@ new class extends Component
                 </x-table>
             </x-card>
         </div>
-    </div>
     </div>
     @endvolt
 
