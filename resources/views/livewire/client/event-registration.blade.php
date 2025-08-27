@@ -22,6 +22,10 @@
                     <div class="alert alert-warning mb-4">
                         This event is not open for registration.
                     </div>
+                    @elseif( $event->registration_ends_at < now())
+                    <div class="alert alert-warning mb-4">
+                        Registration ends at {{ $event->registration_ends_at->format('d M Y H:i') }}.
+                    </div>                    
                     @elseif($registrations_count >= $event->capacity)
                     <div class="alert alert-warning mb-4">
                         This event has reached its capacity.

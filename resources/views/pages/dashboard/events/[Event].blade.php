@@ -43,6 +43,9 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
         <div class="mb-4">
             <strong>{{ __('Date:') }}</strong> {{ $event->start_time->format('F j, Y') }}
         </div>
+                <div class="mb-4">
+            <strong>{{ __('Registration Ends At:') }}</strong> {{ $event->registration_ends_at?->format('F j, Y') }}
+        </div>
         <div class="mb-4">
             <strong>{{ __('Location:') }}</strong> {{ $event->location }}
         </div>
@@ -53,7 +56,7 @@ middleware(['auth', 'verified', 'role:admin,organizer']);
             <strong>{{ __('Status:') }}</strong> {{ $event->status->value }}
         </div>
         <div class="mb-4">
-            <strong>{{ __('Visiblity:') }}</strong> {{ $event->public_status }} <span class="bg-slate-200 p-2 font-bold">{{ !$event->is_public ? 'Registration code: ' .$event->registration_code : '' }}</span>
+            <strong>{{ __('Visiblity:') }}</strong> {{ $event->public_status }} <span class="bg-slate-200 p-2 font-italic">{{ !$event->is_public ? 'Registration code: ' .$event->registration_code : '' }}</span>
         </div>
         <div class="mb-4">
             <strong>{{ __('Description:') }}</strong>

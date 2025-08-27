@@ -22,11 +22,14 @@
 
                         <x-input label="Title" wire:model="form.title" />
                         <x-textarea label="Description" wire:model="form.description" rows="5" />
+
+                        <x-datetime label="Registration Ends at" wire:model="form.registration_ends_at" type="datetime-local" />
+
                         <x-datetime label="Start Time" wire:model="form.start_time" type="datetime-local" />
 
                         <x-input label="Location" wire:model="form.location" />
                         <x-input label="Organizer" wire:model="form.organizer" />
-                        <x-input label="Capacity" wire:model="form.capacity" />
+                        <x-input label="Capacity" wire:model="form.capacity"  />
                         <x-checkbox label="Public" wire:model="form.is_public" hint="Can everyone register this event?" />
 
                         <x-select label="Status" wire:model="form.status" :options="$status" />

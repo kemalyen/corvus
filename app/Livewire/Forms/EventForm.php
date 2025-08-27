@@ -19,14 +19,17 @@ class EventForm extends Form
     #[Validate('required|date|after:today')]
     public $start_time;
 
+    #[Validate('nullable|date|after:today|before:start_time')]
+    public $registration_ends_at;
+
     #[Validate('required|string|max:255')]
     public string $location;
 
     #[Validate('required|string|max:255')]
     public string $organizer;
-
-    #[Validate('required|integer')]
-    public int $capacity;
+ 
+    #[Validate('required|integer|min:1')]
+    public $capacity;
 
     #[Validate('boolean')]
     public bool $is_public = false;
@@ -41,6 +44,7 @@ class EventForm extends Form
         $this->title = $event->title;
         $this->description = $event->description;
         $this->start_time =  $event->start_time->format('Y-m-d H:i'); //'2025-10-12 13:10'; //$event->start_time->format('dd/mm/Y h:i'); // Ensure the format is compatible with datetime-local input
+        $this->registration_ends_at = $event->registration_ends_at?->format('Y-m-d H:i');
         $this->location = $event->location;
         $this->organizer = $event->organizer;
         $this->capacity = $event->capacity;
@@ -58,6 +62,7 @@ class EventForm extends Form
             'title' => $this->title,
             'description' => $this->description,
             'start_time' => $this->start_time,
+            'registration_ends_at' => $this->registration_ends_at,
             'location' => $this->location,
             'organizer' => $this->organizer,
             'capacity' => $this->capacity,
@@ -70,13 +75,17 @@ class EventForm extends Form
 
     public function save(): void
     {
+        $this->validate();
         if ($this->event) {
+            
+
             $status = EventStatus::fromName($this->status) ?? EventStatus::DRAFT;
  
             $this->event->update([
                 'title' => $this->title,
                 'description' => $this->description,
                 'start_time' => $this->start_time,
+                'registration_ends_at' => $this->registration_ends_at,
                 'location' => $this->location,
                 'organizer' => $this->organizer,
                 'capacity' => $this->capacity,

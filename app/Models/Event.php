@@ -28,6 +28,7 @@ class Event extends Model implements Auditable
         'status',
         'organizer_id',
         'slug',
+        'registration_ends_at',
     ];
 
 
@@ -42,8 +43,10 @@ class Event extends Model implements Auditable
     
     protected $casts = [
         'start_time' => 'datetime:Y-m-d H:i',
+        'registration_ends_at' => 'datetime:Y-m-d H:i',
         'is_public' => 'boolean',
         'status' => EventStatus::class,
+        'capacity' => 'integer',
     ];
 
     /**

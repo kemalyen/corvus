@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('slug')->unique()->nullable();
             $table->string('registration_code')->unique()->nullable();
             $table->dateTime('start_time');
+            $table->dateTime('registration_ends_at')->nullable();
             $table->text('location')->nullable();
             $table->text('organizer')->nullable();
             $table->integer('capacity')->default(0);

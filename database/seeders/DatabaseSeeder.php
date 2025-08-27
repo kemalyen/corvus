@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\EventRegistration;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Subscription;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
         User::truncate();
         Event::truncate();
+        Subscription::truncate();
         EventRegistration::truncate();
       
 
@@ -40,12 +42,13 @@ class DatabaseSeeder extends Seeder
 
         $organizers->each(function ($user) use ($organizerRole) {
             $user->attachRole($organizerRole);
+            Subscription::factory()->for($user, 'user')->create();
         });
 
         $events = Event::factory(10)->recycle($organizers)->create();
 
         EventRegistration::factory(500)->recycle($events)->create();
-
+ 
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',

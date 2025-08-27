@@ -17,10 +17,7 @@
             <div :class="{ 'flex' : mobileMenuOpen, 'hidden md:flex' :  !mobileMenuOpen }" class="fixed top-0 left-0 z-40 flex-col items-start justify-start hidden w-full h-full min-h-screen pt-20 space-y-5 text-sm font-medium duration-150 ease-out transform md:pt-0 text-neutral-500 md:h-auto md:min-h-0 md:left-auto md:items-center md:relative">
                 
                 <nav class="flex flex-col w-full p-6 space-y-2 bg-white md:p-0 md:flex-row md:space-x-2 md:space-y-0 md:w-auto md:bg-transparent md:flex ml-4">
-                    <x-ui.nav-link href="/">Home</x-ui.nav-link>
-                    @if(view()->exists('pages.blog.index'))
-                        <x-ui.nav-link href="/blog">Blog</x-ui.nav-link>
-                    @endif
+                    
                 </nav>
             </div>
         </div>
